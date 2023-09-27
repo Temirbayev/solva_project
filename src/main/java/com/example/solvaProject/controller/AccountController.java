@@ -34,4 +34,11 @@ public class AccountController {
         accountService.deleteAccount(id);
         return ResponseEntity.ok("Account deleted");
     }
+
+    @PostMapping("changeLimit/{accountNumber}")
+    @ResponseBody
+    public ResponseEntity changeLimit(@PathVariable(name = "accountNumber") String accountNumber, @RequestBody AccountDto accountDto){
+        accountService.changeLimit(accountNumber,accountDto);
+        return ResponseEntity.ok("limit changed");
+    }
 }

@@ -2,7 +2,6 @@ package com.example.solvaProject.checkCurrency;
 
 
 import com.example.solvaProject.model.CurrencyEntity;
-import com.example.solvaProject.repository.AccountRep;
 import com.example.solvaProject.repository.CurrencyRep;
 import com.example.solvaProject.service.RestTemplateService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ public class ExchangeCurrency {
     @Value("${api.key}")
     private String key;
 
-    @Scheduled(cron = "* * 1 * * *")
+    @Scheduled(cron = "* * 12 * * *")
 //    @Scheduled(cron = "* * * * * *")
     public void check(){
         changeCurrency("USD", "KZT");

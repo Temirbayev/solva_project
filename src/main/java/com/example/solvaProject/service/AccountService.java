@@ -5,6 +5,7 @@ import com.example.solvaProject.model.CurrencyEntity;
 import com.example.solvaProject.model.dto.AccountDto;
 import com.example.solvaProject.repository.AccountRep;
 import com.example.solvaProject.repository.CurrencyRep;
+import com.example.solvaProject.repository.TransactionRep;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountService {
     private final AccountRep accountRep;
+    private final TransactionRep transactionRep;
     private final CurrencyRep currencyRep;
     public void createAccount(AccountDto accountDto){
         double accountDto1 = accountDto.getLimitUsd();
 
-        if (accountDto1 == Double.parseDouble(null)){
+        if (accountDto1 == 0){
             accountDto1 = 1000.0;
         }else {
             accountDto1 = accountDto.getLimitUsd();
@@ -47,7 +49,6 @@ public class AccountService {
         return balance * exchangeRate;
     }
 
-
     public List<AccountEntity> accountList() {
         return accountRep.findAll();
     }
@@ -60,5 +61,11 @@ public class AccountService {
 
     public void deleteAccount(Long id){
         accountRep.deleteById(id);
+    }
+
+    public void changeLimit(String accountNumber, AccountDto accountDto) {
+        AccountEntity accountEntity = accountRep.findFirstByAccountNumber(accountNumber);
+        accountEntity.setLimitUsd(accountDto.getLimitUsd());
+        accountRep.save(accountEntity);
     }
 }

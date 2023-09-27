@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TransactionRep extends JpaRepository<TransactionEntity, Long> {
-    List<TransactionEntity> getAllByAccountFromAndLimitExceeded(String accountNumber,boolean limit);
+    List<TransactionEntity> findByLimitExceeded(boolean limit);
 }

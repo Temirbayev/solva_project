@@ -23,6 +23,7 @@ public class TransactionService {
         double sum = transaction.getSum();
         AccountEntity accFrom = accountRep.findFirstByAccountNumber(transaction.getAccountFrom());
         AccountEntity accTo = accountRep.findFirstByAccountNumber(transaction.getAccountTo());
+        double checkLimit = accFrom.getLimitUsd();
 
         if (transaction.getCurrencyShortname().equals("KZT")){
 
@@ -37,6 +38,14 @@ public class TransactionService {
             accFrom.setBalanceRub(checkCashExchange(accFrom.getBalanceKzt(), "KZT", "JPY"));
             accTo.setBalanceRub(checkCashExchange(accTo.getBalanceKzt(), "KZT", "JPY"));
 
+            if (sum > checkLimit) {
+                // Сумма перевода превышает лимит
+                transaction.setLimitExceeded(true);
+            } else {
+                // Сумма перевода не превышает лимит
+                transaction.setLimitExceeded(false);
+            }
+
         } else if (transaction.getCurrencyShortname().equals("RUB")) {
             System.out.println("RUB sender");
 
@@ -48,6 +57,15 @@ public class TransactionService {
 
             accFrom.setBalanceRub(checkCashExchange(accFrom.getBalanceKzt(), "USD", "RUB"));
             accTo.setBalanceRub(checkCashExchange(accTo.getBalanceKzt(), "USD", "RUB"));
+
+            if (sum > checkLimit) {
+                // Сумма перевода превышает лимит
+                transaction.setLimitExceeded(true);
+            } else {
+                // Сумма перевода не превышает лимит
+                transaction.setLimitExceeded(false);
+            }
+
 
 
         }else{
@@ -61,16 +79,24 @@ public class TransactionService {
 
             accFrom.setBalanceKzt(checkCashExchange(accFrom.getBalanceRub(), "RUB", "KZT"));
             accTo.setBalanceKzt(checkCashExchange(accTo.getBalanceRub(), "RUB", "KZT"));
+
+            if (sum > checkLimit) {
+                // Сумма перевода превышает лимит
+                transaction.setLimitExceeded(true);
+            } else {
+                // Сумма перевода не превышает лимит
+                transaction.setLimitExceeded(false);
+            }
+
         }
+
         transactionRep.save(transaction);
     }
-
-    public List<TransactionEntity> allTransactions(String accountNumber){
-        return transactionRep.getAllByAccountFromAndLimitExceeded(accountNumber, true);
-    }
-
     public double checkCashExchange(double reBalance, String fromCurrency, String toCurrency) {
         CurrencyEntity currencyEntity = currencyRep.findFirstByFromCurrencyAndToCurrency(fromCurrency, toCurrency);
         return accountService.changeCurrency(currencyEntity.getExchangeRate(), reBalance);
+    }
+    public List<TransactionEntity> getAccountsExceedingLimit(){
+        return transactionRep.findByLimitExceeded(true);
     }
 }
