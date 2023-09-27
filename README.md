@@ -39,5 +39,7 @@
 #  Трансфер с одного аккаунта перевод к другому аккаунту
 ![image](https://github.com/Temirbayev/solva_project/assets/60303183/1c349a4a-a3fa-477d-97b5-358600de7244)
 
+# Получение кто имеет лимит 
+![image](https://github.com/Temirbayev/solva_project/assets/60303183/96ca8061-ae23-46d9-ade3-72279594cda9)
 
 
