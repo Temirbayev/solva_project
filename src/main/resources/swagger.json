@@ -1,0 +1,248 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8001",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/account/update/{accountId}": {
+      "put": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "updateAccount",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/transfer": {
+      "post": {
+        "tags": [
+          "transaction-controller"
+        ],
+        "operationId": "createTransfer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionEntity"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/add": {
+      "post": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "createAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/limit": {
+      "get": {
+        "tags": [
+          "transaction-controller"
+        ],
+        "operationId": "getAllLimitTransactions",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/delete/{accountId}": {
+      "get": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "deleteAccount",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/": {
+      "get": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "getAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountDto": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "string"
+          },
+          "balanceUsd": {
+            "type": "number",
+            "format": "double"
+          },
+          "limitUsd": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "TransactionEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accountFrom": {
+            "type": "string"
+          },
+          "accountTo": {
+            "type": "string"
+          },
+          "currencyShortname": {
+            "type": "string"
+          },
+          "sum": {
+            "type": "number",
+            "format": "double"
+          },
+          "expenseCategory": {
+            "type": "string"
+          },
+          "transactionDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "limitExceeded": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
